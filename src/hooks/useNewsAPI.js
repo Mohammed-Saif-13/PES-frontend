@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 
 /**
  * Custom hook for Pharma News API
- * Uses Vercel serverless function for production
+ * Uses Vercel serverless function for production, direct API for development
  */
 export const useNewsAPI = (apiKey) => {
   const [news, setNews] = useState([]);
