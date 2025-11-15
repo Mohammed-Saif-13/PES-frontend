@@ -84,7 +84,7 @@ const PharmaAcademy = () => {
                     <Link to="/login">
                         <Button
                             size="md"
-                            className="bg-indigo-700 text-white hover:bg-indigo-800 shadow-md"
+                            className="bg-indigo-700 text-white p-2 hover:bg-indigo-800 shadow-md"
                         >
                             View Course Catalog
                         </Button>

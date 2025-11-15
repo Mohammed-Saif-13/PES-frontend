@@ -13,6 +13,7 @@ html {
   scroll-behavior: smooth;
 }
 
+
 /* Instant scroll for route changes */
 .route-change {
   scroll-behavior: auto;

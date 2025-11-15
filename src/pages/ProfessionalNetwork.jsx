@@ -67,7 +67,7 @@ const ProfessionalNetwork = () => {
                         piece of advice is sourced from validated, experienced professionals.
                     </p>
                     <Link to="/login">
-                        <Button size="md" className="bg-indigo-700 text-white hover:bg-indigo-800 shadow-md">
+                        <Button size="md" className="bg-indigo-700 text-white p-2 hover:bg-indigo-800 shadow-md">
                             Connect Now
                         </Button>
                     </Link>

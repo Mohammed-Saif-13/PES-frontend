@@ -3,10 +3,11 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainLayout from '@/components/layouts/MainLayout';
-import ScrollToTop from '@/components/common/ScrollToTop'; // ← ADD THIS
+import ScrollToTop from '@/components/common/ScrollToTop';
+import SmoothScroll from '@/components/common/SmoothScroll'; // ← ADD THIS
 import { ROUTES } from '@/constants/routes';
 
-// Dynamically import all page components
+// Lazy imports (same as before)
 const Home = lazy(() => import('@/pages/Home.jsx'));
 const AboutUs = lazy(() => import('@/pages/AboutUs.jsx').then(module => module.AboutUs ? { default: module.AboutUs } : module));
 const PharmaPulse = lazy(() => import('@/pages/PharmaNews.jsx'));
@@ -17,7 +18,6 @@ const ContactUs = lazy(() => import('@/pages/ContactUs.jsx'));
 const Login = lazy(() => import('@/pages/Login.jsx'));
 const Register = lazy(() => import('@/pages/Register.jsx'));
 
-// Component mapping
 const ComponentMap = {
   'Home.jsx': Home,
   'AboutUs.jsx': AboutUs,
@@ -33,7 +33,8 @@ const ComponentMap = {
 function App() {
   return (
     <Router>
-      <ScrollToTop /> {/* ← ADD THIS LINE */}
+      <SmoothScroll /> {/* ← ADD THIS */}
+      <ScrollToTop />
       <MainLayout>
         <Suspense fallback={
           <div className="flex justify-center items-center h-screen text-xl text-indigo-600">

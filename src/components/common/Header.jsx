@@ -31,11 +31,10 @@ const Header = () => {
                         <NavLink
                             key={route.path}
                             to={route.path}
-                            // --- Active Link Styling ---
                             className={({ isActive }) =>
                                 `px-3 py-2 text-sm font-medium transition-colors 
-                 ${isActive
-                                    ? 'text-indigo-700 border-b-2 border-indigo-600 font-bold'
+    ${isActive
+                                    ? 'text-indigo-700 border-b-2 border-indigo-600 font-bold'  // ← Already active
                                     : 'text-slate-600 hover:text-indigo-700'
                                 }`
                             }
