@@ -4,8 +4,7 @@ import { useState, useEffect, useRef } from "react";
 
 /**
  * Custom hook for Pharma News API
- * STRICT PHARMA-ONLY news from verified pharmaceutical sources
- * Uses environment variable for API key security
+ * Uses Vercel serverless function for production
  */
 export const useNewsAPI = (apiKey) => {
   const [news, setNews] = useState([]);
@@ -18,14 +17,6 @@ export const useNewsAPI = (apiKey) => {
 
   const autoRefreshInterval = useRef(null);
 
-  // PHARMA-ONLY DOMAINS (Verified pharmaceutical news sources)
-  const PHARMA_DOMAINS =
-    "fiercepharma.com,biopharmadive.com,statnews.com,endpts.com,pharmabiz.com,pharmatimes.com,pharmaceutical-technology.com,pharmavoice.com,thepharmaletter.com";
-
-  // PHARMA-SPECIFIC KEYWORDS (Strict pharmaceutical terms)
-  const PHARMA_KEYWORDS =
-    '(pharmaceutical OR pharma OR "FDA approval" OR "drug approval" OR "clinical trial" OR biotech OR biotechnology OR "drug development" OR "medical device" OR "drug discovery" OR vaccine OR "life sciences")';
-
   // Fetch pharma-only news
   const fetchNews = async () => {
     try {
@@ -33,19 +24,33 @@ export const useNewsAPI = (apiKey) => {
       setError(null);
       setApiStatus("checking");
 
-      // USE ENVIRONMENT VARIABLE (Vercel safe) OR FALLBACK TO PROP
-      const API_KEY = import.meta.env.VITE_NEWS_API_KEY || apiKey;
+      // PRODUCTION vs DEVELOPMENT detection
+      const isProduction =
+        window.location.hostname !== "localhost" &&
+        window.location.hostname !== "127.0.0.1";
 
-      // PHARMA-ONLY API CALL
-      const response = await fetch(
-        `https://newsapi.org/v2/everything?` +
-          `q=${encodeURIComponent(PHARMA_KEYWORDS)}&` +
-          `domains=${PHARMA_DOMAINS}&` +
-          `language=en&` +
-          `sortBy=publishedAt&` +
-          `pageSize=100&` +
-          `apiKey=${API_KEY}`
-      );
+      let response;
+
+      if (isProduction) {
+        // USE VERCEL SERVERLESS FUNCTION (Production)
+        response = await fetch("/api/news");
+      } else {
+        // USE DIRECT API CALL (Local Development)
+        const PHARMA_DOMAINS =
+          "fiercepharma.com,biopharmadive.com,statnews.com,endpts.com,pharmabiz.com,pharmatimes.com,pharmaceutical-technology.com,pharmavoice.com,thepharmaletter.com";
+        const PHARMA_KEYWORDS =
+          '(pharmaceutical OR pharma OR "FDA approval" OR "drug approval" OR "clinical trial" OR biotech OR biotechnology OR "drug development" OR "medical device" OR "drug discovery" OR vaccine OR "life sciences")';
+
+        response = await fetch(
+          `https://newsapi.org/v2/everything?` +
+            `q=${encodeURIComponent(PHARMA_KEYWORDS)}&` +
+            `domains=${PHARMA_DOMAINS}&` +
+            `language=en&` +
+            `sortBy=publishedAt&` +
+            `pageSize=100&` +
+            `apiKey=${apiKey}`
+        );
+      }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
