@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 /**
  * Custom hook for Pharma News API
  * STRICT PHARMA-ONLY news from verified pharmaceutical sources
+ * Uses environment variable for API key security
  */
 export const useNewsAPI = (apiKey) => {
   const [news, setNews] = useState([]);
@@ -32,6 +33,9 @@ export const useNewsAPI = (apiKey) => {
       setError(null);
       setApiStatus("checking");
 
+      // USE ENVIRONMENT VARIABLE (Vercel safe) OR FALLBACK TO PROP
+      const API_KEY = import.meta.env.VITE_NEWS_API_KEY || apiKey;
+
       // PHARMA-ONLY API CALL
       const response = await fetch(
         `https://newsapi.org/v2/everything?` +
@@ -40,7 +44,7 @@ export const useNewsAPI = (apiKey) => {
           `language=en&` +
           `sortBy=publishedAt&` +
           `pageSize=100&` +
-          `apiKey=${apiKey}`
+          `apiKey=${API_KEY}`
       );
 
       if (!response.ok) {

@@ -8,6 +8,16 @@
    FONT APPLICATION
    ============================================ */
 
+/* Smooth scroll for all anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Instant scroll for route changes */
+.route-change {
+  scroll-behavior: auto;
+}
+
 /* Headings use Manrope */
 h1,
 h2,
@@ -284,12 +294,12 @@ html {
 }
 
 *
-  ============================================
+  /* ============================================
   BLOB
   ANIMATIONS
   (for floating background elements)
-  ============================================
-  */
+  ============================================ */
+  
   @keyframes
   blob {
   0%,
